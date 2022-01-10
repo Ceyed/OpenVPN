@@ -1,5 +1,5 @@
 # Directories
-
+__pycache__/
 
 # Files
 test.*

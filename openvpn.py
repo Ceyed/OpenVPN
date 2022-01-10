@@ -1,67 +1,44 @@
-import subprocess
-import sys
-import PySimpleGUI as sg
-import threading
+"""A GUI program for openconnect"""
 
-ip = "146.0.75.211"
-server_pin = "zgcHKBB+Owuaq4W+zBL1prdZBLDnn7mPrRryfXvea2A="
-servers = {
-    "Netherlands1" : "146.0.75.211",
-    "Netherlands2" : "146.0.73.41"
-}
+import threading
+import PySimpleGUI as sg
+from connection import connect, disconnect
+import config
 
 def main():
+    """Main function for program"""
+    sg.theme('Dark')
     layout = [
-                [sg.Text('Openconnect')],
-                [sg.Button('Connect'), sg.Text(), sg.Button('Disconnect')],
-                [sg.T('Server:', pad=((3,0),0)), sg.OptionMenu(values=(servers.keys()), key='server', auto_size_text=True)],
-                [sg.Output(size=(60,15))],
-                [sg.Button('Exit')]
+                [sg.Text('Openconnect', size=(22), justification='center', font=("Courier", 25))],
+                [sg.Text('Server:', font=("Helvetica", 11), pad=((3,0),0)), \
+                    sg.OptionMenu(values=(config.SERVERS.keys()), \
+                        key='server', auto_size_text=True), \
+                            sg.Button('Connect'), \
+                                sg.Button('Disconnect', button_color=('white', 'red')), \
+                                    sg.Button('Clear', button_color=('white', 'purple'))],
+                [sg.Output(size=(60,15), key='output')],
+                [sg.Button('Exit', size=(5, 1), font=("Courier", 12), \
+                    button_color=('white', 'black'))]
              ]
 
     window = sg.Window('Openconnect v1', layout)
     while True:
         event, values = window.Read()
         if event in (None, 'Exit'):
-            disconnect(window)
-            exit
             break
 
         if event == 'Connect':
-            t1 = threading.Thread(target=connect, args=(window,))
-            t1.start()
+            connect_threading = threading.Thread(target=connect, \
+                args=(window, config.SERVERS[values['server']], config.SERVER_PIN))
+            connect_threading.start()
 
         if event == 'Disconnect':
             disconnect(window)
 
+        if event == 'Clear':
+            window.FindElement('output').Update('')
+
     window.Close()
-
-def connect(window, timeout=None):
-    pre_command = """echo 'if(user.name()=="saeed")login();'|sudo -S echo ."""
-    command = f"""echo 9288|sudo openconnect {ip} -u vbaz344043 --passwd-on-stdin --servercert pin-sha256:{server_pin}"""
-    _ = subprocess.Popen(pre_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = ''
-    for line in p.stdout:
-        line = line.decode(errors='replace' if (sys.version_info) < (3, 5) else 'backslashreplace').rstrip()
-        output += line
-        print(line)
-        window.Refresh() if window else None
-    retval = p.wait(timeout)
-    return (retval, output)
-
-def disconnect(window, timeout=None):
-    # sudo killall openconnect
-    command = "sudo killall openconnect"
-    p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = ''
-    for line in p.stdout:
-        line = line.decode(errors='replace' if (sys.version_info) < (3, 5) else 'backslashreplace').rstrip()
-        output += line
-        print(line)
-        window.Refresh() if window else None
-    retval = p.wait(timeout)
-    return (retval, output)
 
 if __name__ == '__main__':
     try:
