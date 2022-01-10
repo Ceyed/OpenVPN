@@ -3,10 +3,10 @@ A GUI for opencpn in manjaro linux  <br/><br/>
 
 ## Planing:
 ### Version 1:
-    [x] Just connect to selected server
+- [x] Just connect to selected server
 
 ### Version 1.1:
-    [ ] Sort servers from fastest to slowest
+- [ ] Sort servers from fastest to slowest
 
 ### Version 1.2:
-    [ ] Add a image for connection status, 'Red' for 'Not Connected' and 'Green' for 'Connected'
+- [ ] Add a image for connection status, 'Red' for 'Not Connected' and 'Green' for 'Connected'
