@@ -1,5 +1,5 @@
 # OpenVPN
-A GUI for opencpn in manjaro linux  <br/><br/>
+A GUI for openvpn in manjaro linux  <br/><br/>
 
 ## Planing:
 ### Version 1:
