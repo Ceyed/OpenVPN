@@ -1,4 +1,6 @@
-"""Configuration file of project"""
+"""
+Configuration file of project
+"""
 
 SERVER_PIN = "zgcHKBB+Owuaq4W+zBL1prdZBLDnn7mPrRryfXvea2A="
 SERVERS = {
