@@ -42,8 +42,7 @@ def main():
         # 'Connect' button clicked
         if event == 'Connect':
             # Connect to selected/fastest server
-            connect_threading = threading.Thread(target=connect, \
-                args=(window, values))
+            connect_threading = threading.Thread(target=connect, args=(window, values))
             connect_threading.start()
 
         # 'Disconnect' button clicked
