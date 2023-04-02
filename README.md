@@ -20,3 +20,4 @@ A GUI for openvpn in manjaro linux  <br /><br />
 - [x] Adding more comments in code
 - [x] Thread for sorting servers
 - [x] If connection has been established user clicked on 'Connect' again, last connection should be killed then start another one
+- [ ] System tray option
